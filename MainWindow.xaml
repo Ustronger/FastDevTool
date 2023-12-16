@@ -1,0 +1,47 @@
+﻿<Window x:Class="FastDevTool.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:local="clr-namespace:FastDevTool" 
+        xmlns:viewmode="clr-namespace:FastDevTool.ViewMode"
+        xmlns:be="clr-namespace:FastDevTool.View.Behaviors"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=viewmode:MainWindowViewMode}"
+        Title="MainWindow" Height="450" Width="800" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <hc:TextBox hc:InfoElement.Placeholder="路径" Style="{StaticResource TextBoxExtend}" Margin="10,10,10,10" x:Name="filePathBox" AllowDrop="True" Grid.Column="0" Height="35">
+                <i:Interaction.Behaviors>
+                <be:DragFileInBehavior FilePath="{Binding ElementName=filePathBox, Path=Text, Mode=OneWayToSource}"/>
+                </i:Interaction.Behaviors>
+            </hc:TextBox>
+            <hc:TextBox hc:InfoElement.Placeholder="0" hc:InfoElement.Title="线程数:" hc:InfoElement.TitlePlacement="Left"  Style="{StaticResource TextBoxExtend}" 
+                        Margin="0,10,10,10" x:Name="threadNum" Grid.Column="1" Height="35" InputScope="Number"
+                        Text="{Binding ThreadNum, Mode=OneWayToSource}">
+            </hc:TextBox>
+        </Grid>
+
+
+
+        <StackPanel x:Name="stackPanel" Orientation="Horizontal" Grid.Row="1" Height="50">
+            <Button Style="{StaticResource ButtonPrimary}" Content="解压" Margin="200,5,0,5" hc:BorderElement.CornerRadius="5" 
+                Command="{Binding UncompressCommand}"
+                CommandParameter="{Binding ElementName=filePathBox, Path=Text}"/>
+            <Button Style="{StaticResource ButtonPrimary}" Content="清除" Margin="200,5,0,5" hc:BorderElement.CornerRadius="5"
+                Command="{Binding ClearLogCommand}"/>
+        </StackPanel>
+        <hc:TextBox  Width="auto" Height="auto" hc:InfoElement.TitleWidth="auto" hc:InfoElement.TitlePlacement="Top" hc:InfoElement.Title="info" Style="{StaticResource TextBoxExtend}" Text="{Binding Log, Mode=OneWay}" VerticalContentAlignment="Top" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" Grid.Row="2" BorderBrush="#FF8098A0" Margin="1,1,1,1" />
+    </Grid>
+</Window>
